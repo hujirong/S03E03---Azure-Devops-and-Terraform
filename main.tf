@@ -1,41 +1,26 @@
 provider "azurerm" {
-    version = "2.5.0"
-    features {}
+  //version = "~>2.0"
+  features {}
 }
 
-terraform {
-    backend "azurerm" {
-        resource_group_name  = "tf_rg_blobstore"
-        storage_account_name = "tfstoragebinarythistle"
-        container_name       = "tfstate"
-        key                  = "terraform.tfstate"
-    }
+resource "azurerm_resource_group" "rg" {
+  name = "Learning"
+  location = "Central US"
 }
 
-variable "imagebuild" {
-  type        = string
-  description = "Latest Image Build"
-}
-
-
-
-resource "azurerm_resource_group" "tf_test" {
-  name = "tfmainrg"
-  location = "Australia East"
-}
-
-resource "azurerm_container_group" "tfcg_test" {
+# Your Terraform code goes here...
+resource "azurerm_container_group" "cg" {
   name                      = "weatherapi"
-  location                  = azurerm_resource_group.tf_test.location
-  resource_group_name       = azurerm_resource_group.tf_test.name
+  location                  = azurerm_resource_group.rg.location
+  resource_group_name       = azurerm_resource_group.rg.name
 
   ip_address_type     = "public"
-  dns_name_label      = "binarythistlewa"
+  dns_name_label      = "hujirong"
   os_type             = "Linux"
 
   container {
       name            = "weatherapi"
-      image           = "binarythistle/weatherapi:${var.imagebuild}"
+      image           = "hujirong/weatherapi"
         cpu             = "1"
         memory          = "1"
 
